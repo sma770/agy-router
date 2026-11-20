@@ -1,0 +1,20 @@
+{
+  "command": "node",
+  "args": [
+    "main.mjs"
+  ],
+  "restart_policy": "always",
+  "display_name": "AGY 智能路由台",
+  "description": "可视化调节 Antigravity 2.0 App 自动路由开关与滑块阈值，内置 19 项指令速查与 AGENTS.md 规则实时预览。",
+  "has_web_ui": true,
+  "ui_config": {
+    "display_name": "AGY 智能路由台",
+    "views": [
+      {
+        "path": "/",
+        "entrypoint": "SIDECAR_UI_ENTRYPOINT_AUX_PANE",
+        "title": "AGY 智能路由台"
+      }
+    ]
+  }
+}

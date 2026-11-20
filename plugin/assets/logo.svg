@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="agyBg" x1="16" y1="16" x2="112" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#0D9488" />
+    </linearGradient>
+  </defs>
+  <rect x="14" y="14" width="100" height="100" rx="24" fill="url(#agyBg)" stroke="#E2E8F0" stroke-opacity="0.35" stroke-width="2" />
+  <line x1="34" y1="42" x2="94" y2="42" stroke="#F8FAFC" stroke-opacity="0.45" stroke-width="6" stroke-linecap="round" />
+  <line x1="34" y1="42" x2="72" y2="42" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" />
+  <circle cx="72" cy="42" r="10" fill="#FFFFFF" stroke="#312E81" stroke-width="3" />
+
+  <line x1="34" y1="64" x2="94" y2="64" stroke="#F8FAFC" stroke-opacity="0.45" stroke-width="6" stroke-linecap="round" />
+  <line x1="34" y1="64" x2="48" y2="64" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" />
+  <circle cx="48" cy="64" r="10" fill="#5EEAD4" stroke="#134E4A" stroke-width="3" />
+
+  <line x1="34" y1="86" x2="94" y2="86" stroke="#F8FAFC" stroke-opacity="0.45" stroke-width="6" stroke-linecap="round" />
+  <line x1="34" y1="86" x2="80" y2="86" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" />
+  <circle cx="80" cy="86" r="10" fill="#FFFFFF" stroke="#312E81" stroke-width="3" />
+</svg>

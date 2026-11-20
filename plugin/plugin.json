@@ -1,0 +1,18 @@
+{
+  "name": "agy-router",
+  "displayName": "AGY 智能路由台",
+  "description": "专为 Google Antigravity 2.0 桌面端 App 打造的原生智能路由控制台：可视化调节自动 Plan、Grill-Me、多智能体与前端斜杠指令阈值，内置 19 项 App 指令速查与规则实时预览。",
+  "version": "1.0.0",
+  "logo": "assets/logo.svg",
+  "author": {
+    "name": "sma770",
+    "url": "https://github.com/sma770"
+  },
+  "homepage": "https://github.com/sma770/agy-router",
+  "repository": "https://github.com/sma770/agy-router",
+  "suggestedPrompts": [
+    "打开 AGY 智能路由台面板，我想调节自动 Plan 阈值",
+    "这个重构任务该用 /plan 还是 /grill-me？帮我选指令",
+    "给我看 Antigravity 桌面端 19 个内置斜杠指令速查表"
+  ]
+}

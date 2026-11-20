@@ -1,0 +1,7 @@
+{
+  "name": "agy-router-panel",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Native Antigravity 2.0 App sidecar panel for agy-router"
+}

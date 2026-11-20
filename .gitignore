@@ -1,0 +1,13 @@
+# Runtime user data inside plugin (never commit personal thresholds)
+plugin/data/
+data/
+
+# Temp files & logs
+*.tmp
+*.tmp.*
+*.log
+
+# OS / Editor / Node artifacts
+.DS_Store
+Thumbs.db
+node_modules/

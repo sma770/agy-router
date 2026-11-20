@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AGY 智能路由台</title>
+  <script src="/preload.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand">
+        <img src="/logo.svg" alt="AGY 智能路由台" class="brand-logo" />
+        <div class="brand-meta">
+          <div class="brand-title-row">
+            <h1 class="brand-title">AGY 智能路由台</h1>
+            <span id="statusBadge" class="status-badge is-off">已暂停</span>
+          </div>
+          <p class="brand-sub">Antigravity 2.0 App 原生动态路由与指令参谋</p>
+        </div>
+      </div>
+
+      <label class="switch-wrap master-switch" title="开启或暂停全局自动路由规则">
+        <input id="masterEnabled" type="checkbox" />
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+      </label>
+    </header>
+
+    <nav class="tab-bar" role="tablist" aria-label="控制台视图">
+      <button type="button" class="tab-btn is-active" data-tab="config" role="tab" aria-selected="true">路由配置</button>
+      <button type="button" class="tab-btn" data-tab="commands" role="tab" aria-selected="false">指令速查 <span class="tab-count">19</span></button>
+      <button type="button" class="tab-btn" data-tab="preview" role="tab" aria-selected="false">规则预览</button>
+    </nav>
+
+    <main class="main-content">
+      <!-- Tab 1: 路由配置 -->
+      <section id="panel-config" class="tab-panel is-active" role="tabpanel">
+        <section class="card preset-card">
+          <div class="preset-header">
+            <span class="section-label">一键预设档位</span>
+            <span id="customPresetChip" class="custom-chip" hidden>当前为自定义微调</span>
+          </div>
+          <div id="presetGrid" class="preset-grid">
+            <button type="button" class="preset-btn" data-preset="off">零打扰</button>
+            <button type="button" class="preset-btn" data-preset="direct">直干优先</button>
+            <button type="button" class="preset-btn" data-preset="balanced">均衡克制</button>
+            <button type="button" class="preset-btn" data-preset="strict">严谨架构</button>
+          </div>
+          <p id="presetDesc" class="preset-desc"></p>
+        </section>
+
+        <div id="pausedBanner" class="notice-banner" hidden>
+          当前处于<strong>零打扰起步</strong>状态（全局自动路由已暂停）。你仍可提前调整下方参数，拨开右上角总开关或任选一套预设即可从下一回合起生效。
+        </div>
+
+        <div id="groupsWrap" class="groups-wrap">
+          <!-- 分组 1：规划与追问 -->
+          <details class="group-card" open>
+            <summary class="group-summary">
+              <span>1. 规划与追问</span>
+              <span class="group-hint">控制动手前何时停下提问或先出方案</span>
+            </summary>
+            <div class="group-body">
+              <!-- Plan -->
+              <div class="control-item" data-feature="plan">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">跨文件自动先出方案（Plan）</span>
+                    <span class="control-desc">达到阈值时先出 Implementation Plan 等确认，以下小改直接直干</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="planEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+                <div id="planSub" class="sub-controls">
+                  <div class="slider-row">
+                    <span class="slider-label">触发文件数阈值</span>
+                    <input id="planMinFiles" type="range" min="3" max="15" step="1" />
+                    <span id="planMinFilesVal" class="val-pill">6 个</span>
+                  </div>
+                  <p id="whitelistHint" class="dynamic-hint">当前免打扰白名单：1～5 个文件的局部修改直接执行</p>
+                  <label class="checkbox-row">
+                    <input id="planTriggerArch" type="checkbox" />
+                    <span>涉及公共接口或核心架构变动时强制先出 Plan</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Grill-Me -->
+              <div class="control-item" data-feature="grillMe">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">模糊需求单题追问（Grill-Me）</span>
+                    <span class="control-desc">遇到边界不清的新想法时每次只问 1 题，防止猜错返工</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="grillEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+                <div id="grillSub" class="sub-controls">
+                  <div class="segmented-row">
+                    <span class="slider-label">触发严格度</span>
+                    <div id="grillStrictnessGroup" class="segmented-group" role="group" aria-label="Grill-Me 严格度">
+                      <button type="button" class="seg-btn" data-strictness="relaxed">宽松</button>
+                      <button type="button" class="seg-btn" data-strictness="standard">标准</button>
+                      <button type="button" class="seg-btn" data-strictness="strict">严谨</button>
+                    </div>
+                  </div>
+                  <div class="slider-row">
+                    <span class="slider-label">最多连续追问轮数</span>
+                    <input id="grillMaxQuestions" type="range" min="1" max="5" step="1" />
+                    <span id="grillMaxQuestionsVal" class="val-pill">3 轮</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <!-- 分组 2：多智能体与工具 -->
+          <details class="group-card" open>
+            <summary class="group-summary">
+              <span>2. 多智能体与原生工具</span>
+              <span class="group-hint">高消耗并发能力可单独关停以省额度</span>
+            </summary>
+            <div class="group-body">
+              <!-- run_workflow -->
+              <div class="control-item" data-feature="runWorkflow">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">
+                      同质批处理脚本（run_workflow）
+                      <span class="tier-badge is-pro">Pro / Ultra</span>
+                    </span>
+                    <span class="control-desc">对大批量同质文件/目录写 Python 并发脚本做语义检查或改造</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="workflowEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+                <div id="workflowSub" class="sub-controls">
+                  <div class="slider-row">
+                    <span class="slider-label">触发独立对象数量</span>
+                    <input id="workflowMinItems" type="range" min="5" max="30" step="1" />
+                    <span id="workflowMinItemsVal" class="val-pill">10 个</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- swarm -->
+              <div class="control-item" data-feature="swarm">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">
+                      多智能体协作（swarm）
+                      <span class="tier-badge is-warn">Pro / Ultra · 高额度</span>
+                    </span>
+                    <span class="control-desc">多个独立模块并行开发并组织测试员交叉验收</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="swarmEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+                <div id="swarmSub" class="sub-controls">
+                  <div class="slider-row">
+                    <span class="slider-label">触发并行模块数</span>
+                    <input id="swarmMinModules" type="range" min="2" max="6" step="1" />
+                    <span id="swarmMinModulesVal" class="val-pill">3 个</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- browser -->
+              <div class="control-item">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">动态网页实操（browser）</span>
+                    <span class="control-desc">涉及网页点击、表单操作或 UI 截图核验时自动委派浏览器子智能体</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="browserEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- generative_ui -->
+              <div class="control-item">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">
+                      交互式可视化（generative_ui）
+                      <span class="tier-badge is-app">App 专属</span>
+                    </span>
+                    <span class="control-desc">复杂架构图、数据对比或流程图演示时主动渲染交互 HTML 视图</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="genUiEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <!-- 分组 3：前端指令首行提醒 -->
+          <details class="group-card" open>
+            <summary class="group-summary">
+              <span>3. 前端指令首行提醒</span>
+              <span class="group-hint">命中时仅在回复第 1 行附可复制命令，不打断当前排查</span>
+            </summary>
+            <div class="group-body">
+              <!-- /boost -->
+              <div class="control-item" data-feature="boost">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">
+                      疑难深挖提醒（/boost）
+                      <span class="tier-badge is-pro">付费计划</span>
+                    </span>
+                    <span class="control-desc">同一顽固 Bug 反复未修好或并发死锁时提示三层多假设深挖</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="boostEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+                <div id="boostSub" class="sub-controls">
+                  <div class="slider-row">
+                    <span class="slider-label">连续失败次数阈值</span>
+                    <input id="boostMinAttempts" type="range" min="2" max="5" step="1" />
+                    <span id="boostMinAttemptsVal" class="val-pill">3 次</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- /goal -->
+              <div class="control-item">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">死磕长闭环提醒（/goal）</span>
+                    <span class="control-desc">用户明确要求修通全部报错与测试、中途别停时提示</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="goalEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- /teamwork -->
+              <div class="control-item">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">
+                      跨天大迁移提醒（/teamwork）
+                      <span class="tier-badge is-pro">付费计划</span>
+                    </span>
+                    <span class="control-desc">遇到仓库级框架升级或大型子系统重写时提示</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="teamworkEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- /compact -->
+              <div class="control-item" data-feature="compact">
+                <div class="control-row">
+                  <div class="control-title-wrap">
+                    <span class="control-title">长对话浓缩提醒（/compact）</span>
+                    <span class="control-desc">单会话持续过多轮次、上下文变沉时提醒浓缩历史</span>
+                  </div>
+                  <label class="switch-wrap">
+                    <input id="compactEnabled" type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                </div>
+                <div id="compactSub" class="sub-controls">
+                  <div class="slider-row">
+                    <span class="slider-label">对话轮数提醒阈值</span>
+                    <input id="compactMinTurns" type="range" min="15" max="60" step="5" />
+                    <span id="compactMinTurnsVal" class="val-pill">30 轮</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <footer class="config-footer">
+          <span id="saveStatus" class="save-status">就绪</span>
+          <button id="resetBtn" type="button" class="ghost-btn">恢复默认</button>
+        </footer>
+      </section>
+
+      <!-- Tab 2: 指令速查 -->
+      <section id="panel-commands" class="tab-panel" role="tabpanel" hidden>
+        <div class="search-bar-wrap">
+          <input
+            id="commandSearch"
+            type="search"
+            class="search-input"
+            placeholder="搜索指令名、场景或关键词（如 boost、压缩、批处理）..."
+          />
+          <div id="categoryChips" class="chip-row"></div>
+        </div>
+
+        <div id="commandList" class="command-list"></div>
+
+        <details class="group-card matrix-card">
+          <summary class="group-summary">
+            <span>4 组高频易混指令对比矩阵</span>
+            <span class="group-hint">点开查看临界差异</span>
+          </summary>
+          <div id="comparisonsWrap" class="group-body"></div>
+        </details>
+
+        <details class="group-card matrix-card">
+          <summary class="group-summary">
+            <span>Antigravity App 替代终端 CLI 的桌面端操作指路</span>
+            <span class="group-hint">无 /undo /branch /effort</span>
+          </summary>
+          <div id="desktopNotesWrap" class="group-body"></div>
+        </details>
+      </section>
+
+      <!-- Tab 3: 规则预览 -->
+      <section id="panel-preview" class="tab-panel" role="tabpanel" hidden>
+        <section class="card preview-meta-card">
+          <div class="preview-meta-top">
+            <div>
+              <div class="section-label">编译后规则体积（上限 24,000 字节）</div>
+              <div id="previewStatsText" class="preview-stats-text">0 / 24,000 字节</div>
+            </div>
+            <button id="copyRulesBtn" type="button" class="primary-btn">复制规则文本</button>
+          </div>
+          <div class="progress-track">
+            <div id="previewProgressBar" class="progress-fill" style="width: 0%"></div>
+          </div>
+          <div id="previewEnabledSummary" class="preview-enabled-summary"></div>
+        </section>
+
+        <section class="card preview-code-card">
+          <pre class="code-box"><code id="rulesPreviewCode">加载中...</code></pre>
+        </section>
+
+        <div class="paths-note">
+          <div>规则路径：<code id="rulesPathText">...</code></div>
+          <div>配置路径：<code id="settingsPathText">...</code></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
